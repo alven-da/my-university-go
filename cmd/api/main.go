@@ -1,18 +1,37 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
-	user_handler "github.com/alven-da/my-university-go/internal/adapter/http"
+	http_handler "github.com/alven-da/my-university-go/internal/adapter/http"
 	"github.com/alven-da/my-university-go/internal/adapter/repository"
 	"github.com/alven-da/my-university-go/internal/usecase"
+	"github.com/gorilla/mux"
 )
 
 func main() {
+    // initialize repo
     repo := repository.NewMemoryRepo()
-    service := usecase.NewUserService(repo)
-    handler := user_handler.NewUserHandler(service)
+    
+    // initialize services
+    service := usecase.NewStudentService(repo)
 
-    http.HandleFunc("/users", handler.Register)
-    http.ListenAndServe(":8080", nil)
+    // initialize http handlers
+    student_handler := http_handler.NewStudentHandler(service)
+
+    r := mux.NewRouter()
+
+    r.HandleFunc("/student", student_handler.Register).Methods(http.MethodPost)
+    r.HandleFunc("/student/{id}", student_handler.GetById).Methods(http.MethodGet)
+
+    // Health Check
+    r.HandleFunc("/health", http_handler.HealthCheck).Methods(http.MethodGet)
+
+    port := ":8080"
+    log.Printf("🚀 HTTP server running on http://localhost%s\n", port)
+
+    if err := http.ListenAndServe(port, r); err != nil {
+        log.Fatalf("Server failed: %v", err)
+    }
 }

@@ -7,25 +7,25 @@ import (
 )
 
 type MemoryRepo struct {
-    users map[int]domain.User
+    students map[int]domain.Student
     nextID int
 }
 
 func NewMemoryRepo() *MemoryRepo {
-    return &MemoryRepo{users: make(map[int]domain.User), nextID: 1}
+    return &MemoryRepo{students: make(map[int]domain.Student), nextID: 1}
 }
 
-func (r *MemoryRepo) Create(user domain.User) (domain.User, error) {
-    user.ID = r.nextID
-    r.users[r.nextID] = user
+func (r *MemoryRepo) Create(student domain.Student) (domain.Student, error) {
+    student.ID = r.nextID
+    r.students[r.nextID] = student
     r.nextID++
-    return user, nil
+    return student, nil
 }
 
-func (r *MemoryRepo) GetByID(id int) (domain.User, error) {
-    user, ok := r.users[id]
+func (r *MemoryRepo) GetByID(id int) (domain.Student, error) {
+    student, ok := r.students[id]
     if !ok {
-        return domain.User{}, fmt.Errorf("not found")
+        return domain.Student{}, fmt.Errorf("not found")
     }
-    return user, nil
+    return student, nil
 }
