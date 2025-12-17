@@ -1,4 +1,3 @@
-// internal/domain/user.go
 package domain
 
 type Student struct {
@@ -8,7 +7,7 @@ type Student struct {
 }
 
 // Port (interface) for persistence
-type UserRepository interface {
+type StudentRepository interface {
     Create(user Student) (Student, error)
     GetByID(id int) (Student, error)
 }

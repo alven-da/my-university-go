@@ -1,4 +1,3 @@
-// internal/usecase/user_service.go
 package usecase
 
 import (
@@ -8,10 +7,10 @@ import (
 )
 
 type StudentService struct {
-    repo domain.UserRepository
+    repo domain.StudentRepository
 }
 
-func NewStudentService(r domain.UserRepository) *StudentService {
+func NewStudentService(r domain.StudentRepository) *StudentService {
     return &StudentService{repo: r}
 }
 
