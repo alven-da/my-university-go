@@ -14,9 +14,9 @@ func NewStudentService(r domain.StudentRepository) *StudentService {
     return &StudentService{repo: r}
 }
 
-func (s *StudentService) RegisterUser(name, email string) (domain.Student, error) {
-    user := domain.Student{Name: name, Email: email}
-    return s.repo.Create(user)
+func (s *StudentService) RegisterStudent(name, email string) (domain.Student, error) {
+    student := domain.Student{Name: name, Email: email}
+    return s.repo.Create(student)
 }
 
 func (s *StudentService) GetStudentById(id int) (domain.Student, error) {

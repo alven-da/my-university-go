@@ -8,6 +8,6 @@ type Student struct {
 
 // Port (interface) for persistence
 type StudentRepository interface {
-    Create(user Student) (Student, error)
+    Create(student Student) (Student, error)
     GetByID(id int) (Student, error)
 }

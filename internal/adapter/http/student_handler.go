@@ -26,7 +26,7 @@ func (h *StudentHandler) Register(w http.ResponseWriter, r *http.Request) {
 
     _ = json.NewDecoder(r.Body).Decode(&input)
 
-    student, err := h.service.RegisterUser(input.Name, input.Email)
+    student, err := h.service.RegisterStudent(input.Name, input.Email)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
