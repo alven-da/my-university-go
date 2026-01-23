@@ -13,22 +13,29 @@ import (
 func main() {
     // initialize repo
     repo := repository.NewMemoryRepo()
+    subject_repo := repository.NewSubjectMemoryRepo()
     
     // initialize services
     student_service := usecase.NewStudentService(repo)
     public_service := usecase.NewPublicService()
+    subject_service := usecase.NewSubjectService(subject_repo)
 
     // initialize http handlers
     student_handler := http_handler.NewStudentHandler(student_service)
     public_handler := http_handler.NewPublicHandler(public_service)
+    subject_handler := http_handler.NewSubjectHandler(subject_service)
 
     r := mux.NewRouter()
 
-    r.HandleFunc("/student", student_handler.Register).Methods(http.MethodPost)
-    r.HandleFunc("/student/{id}", student_handler.GetById).Methods(http.MethodGet)
+    // Student API
+    r.HandleFunc("/students", student_handler.Register).Methods(http.MethodPost)
+    r.HandleFunc("/students/{id}", student_handler.GetById).Methods(http.MethodGet)
 
-    // Health Check
+    // Health Check API
     r.HandleFunc("/health", public_handler.HealthCheck).Methods(http.MethodGet)
+
+    // Subject API
+    r.HandleFunc("/subjects/{id}", subject_handler.GetSubjectByID).Methods(http.MethodGet)
 
     port := ":8080"
     log.Printf("🚀 HTTP server running on http://localhost%s\n", port)
