@@ -3,16 +3,22 @@ package http
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/alven-da/my-university-go/internal/usecase"
 )
 
-func HealthCheck(w http.ResponseWriter, r *http.Request) {
+type PublicHandler struct {
+	service *usecase.PublicService
+}
+
+func NewPublicHandler(s *usecase.PublicService) *PublicHandler {
+	return &PublicHandler{service: s}
+}
+
+func (h *PublicHandler) HealthCheck(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	data := struct {
-			Status string `json:"status"`
-	}{
-			Status: "ok",
-	}
+	data := h.service.HealthCheck()
 
 	json.NewEncoder(w).Encode(data)
 }
